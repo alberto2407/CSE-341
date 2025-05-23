@@ -81,9 +81,20 @@ const deleteContact = async (req, res) => {
     res.json(contact);
 }
 
+const getContact = async (req, res) => {
+    const {id} = req.params;
+    const isValidId = mongoose.Types.ObjectId.isValid(id);
+    if (!isValidId) {
+        return res.status(400).json({message: 'id is not valid'});
+    }
+    const objectId = new mongoose.Types.ObjectId(id);
+    const contact = await ContactModel.findOne({ _id: objectId });
+    res.json(contact);
+}
 module.exports = { 
     getAllContacts,
     createContact,
     updateContact,
-    deleteContact 
+    deleteContact,
+    getContact
 };
